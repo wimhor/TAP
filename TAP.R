@@ -97,19 +97,20 @@ getArguments <- function (args) {
       alpha <<- as.numeric (args[i+1])
     } else if (args[i] == "-mu") {
       mu <<- as.numeric (args[i+1])
-    } else if (args[i] == "-K") {
+    } else if (args[i] == "-k") {
       K <<- as.numeric (args[i+1])
-    } else if (args[i] == "-M1") {
+    } else if (args[i] == "-init") {
       M_1 <<- as.numeric (args[i+1])
-    } else if (args[i] == "-T") {
+    } else if (args[i] == "-len") {
       T <<- as.numeric (args[i+1])
     } else if (args[i] == "-help") {
-      cat ("Rscript TAP.R [-alpha <a>] [-mu <u>] [-K <k>] [-M1 <m1>] [-T <t>]\n\n")
-      cat ("  - <a>:  The value of the alpha parameter (default=0.01).\n")
-      cat ("  - <u>:  The value of the mu parameter (default=0.0).\n")
-      cat ("  - <k>:  The maximum number of goods to recombine (default=4).\n")
-      cat ("  - <m1>: The initial number of goods (default=10).\n")
-      cat ("  - <t>:  The number of time steps (default=100).\n\n")
+      cat ("Usage: Rscript TAP.R [-alpha A] [-mu U] [-k K] [-init I] [-len T]\n\n")
+      cat ("  -alpha A: The value A of the alpha parameter (default=0.01).\n")
+      cat ("  -mu U:    The value U of the mu parameter (default=0.0).\n")
+      cat ("  -k K:     The maximum number K of parents (default=4).\n")
+      cat ("  -init I:  The initial number I of goods (default=10).\n")
+      cat ("  -len T:   The number of time steps T to run (default=100).\n")
+      cat ("  -help:    Print this help message and exit.\n")
       q ("no")
     } else {
       print ("Unknown argument...")

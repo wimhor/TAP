@@ -19,39 +19,41 @@ To run, go back up to the parent directory and type
 
     ./TAP -help
 
-to see a list of required and optional program arguments for the stochastic version. To run the deterministic version, type
+to see the list of required and optional program arguments for the stochastic version. To run the deterministic version, type
 
     Rscript TAP.R -help
 
-to see a list of optional script arguments (assuming R is installed on your computer).
+to see the list of optional script arguments (assuming R is installed on your computer).
 
 ## Arguments
 The C++ program for the stochastic version requires at least some arguments, while others are optional. The R script for the deterministic version has only optional arguments. 
 
-For the `TAP` C++ program, the following values are required:
-  - `i`:    The initial number of goods (`i>0`).
-  - `m`:    The maximum number of goods (when reached, the simulation ends).
-  - `a`:    The parameter `alpha` (`0<=alpha<=1`).
+For the `TAP` C++ program, the following arguments are required:
+  - `-init I`:  The initial number I of goods (`I>0`).
+  - `-max M`:   The maximum number M of goods (when reached, the run ends).
+  - `-alpha A`: The value A of the alpha parameter (`0.0<=A<=1.0`).
   
 while these are optional (defaults indicated):
-  - `K`:    The maximum number of parents for a new good (default=`4`).
-  - `u`:    The death rate (default=`0.0`).
-  - `s`:    The random seed (default=`0`: will be based on current time).
-  - `desc`: Generate the descent distribution.
+  - `-k K`:     The maximum number K of parents for a new good (default=`4`).
+  - `-mu U`:    The value U of the mu parameter (default=`0.0`).
+  - `-seed S`:  The random seed S (default=`0`: use current time).
+  - `-desc`:    Generate the descent distribution.
+  - `-help`:    Print this help message and exit.
 
-For the `TAP.R` R script, the following values are optional (defaults indicated):
-  - `a`:    The parameter `alpha` (default=`0.01`).
-  - `u`:    The death rate (default=`0.0`).
-  - `k`:    The maximum number of parents for a new good (default=`4`).
-  - `m1`:   The initial number of goods (default=`10`).
-  - `t`:    The number of time steps to simulate (default=`100`).
+For the `TAP.R` R script, the following arguments are optional (defaults indicated):
+  - `-alpha A`: The value A of the alpha parameter (default=`0.01`).
+  - `-mu U`:    The value U of the mu parameter (default=`0.0`).
+  - `-k K`:     The maximum number K of parents (default=`4`).
+  - `-init I`:  The initial number I of goods (default=`10`).
+  - `-len T`:   The number of time steps T to run (default=`100`).
+  - `-help`:    Print this help message and exit.
 
 ## Output
 The C++ program will generate several output files:
-  - `tap.dat`: Contains the number of goods M_t at each time step t.
+  - `tap.dat`: Contains the number of goods `M_t` at each time step `t`.
   - `goods.dat`: Contains the ID number, time of birth, and time of death (`0` if not applicable) for each newly created good, together with a list of parent IDs.
   - `hist.dat`: If the `-desc` argument was included, this file contains the descent distribution as a histogram.
 
 The R script will generate one output file:
-  - `TAP.txt`: Contains the number of goods M_t at consecutive time steps.
+  - `TAP.txt`: Contains the number of goods `M_t` at consecutive time steps.
   

@@ -108,7 +108,7 @@ int getArgs (int argc, char **argv)
       }
       i++;
     }
-    else if (strcmp (argv[i], "-K") == 0)
+    else if (strcmp (argv[i], "-k") == 0)
     {
       if ((sscanf (argv[++i], "%d", &k) != 1) || (TAPmodel->setK (k) == -1))
       {
@@ -155,22 +155,17 @@ int getArgs (int argc, char **argv)
     }
     else if (strcmp (argv[i], "-help") == 0)
     {
-      cout << endl
-	   << argv[0] << " -init <i> -max <m> -alpha <a> [-K <K>] [-mu <u>] "
-	   << "[-seed <s>] [-desc] [-help]" << endl
+      cout << "Usage: " << argv[0] << " -init I -max M -alpha A [-k K] [-mu U] "
+	   << "[-seed S] [-desc] [-help]" << endl << endl
+	   << "  -init I:  The initial number I of goods (I>0)." << endl
+	   << "  -max M:   The maximum number M of goods (when reached, the run ends)."
 	   << endl
-	   << "Required arguments:" << endl
-	   << "  init:  The initial number of goods (i > 0)." << endl
-	   << "  max:   The maximum number of goods (when reached, the run ends)." << endl
-	   << "  alpha: The parameter 'alpha' (or 'birth rate'; 0.0<=a<=1.0)." << endl
-	   << endl
-	   << "Optional arguments:" << endl
-	   << "  K:     The maximum number of parents (default: K = 4)" << endl
-	   << "  mu:    The parameter 'mu' (or 'death rate'; default: u = 0.0)" << endl
-	   << "  seed:  The random seed to use (default: s = 0, set randomly)." << endl
-	   << "  desc:  Generate the descent distribution." << endl
-	   << endl
-	   << "  help:  Print out this help message and exit." << endl;
+	   << "  -alpha A: The value A of the alpha parameter (0.0<=A<=1.0)." << endl
+	   << "  -k K:     The maximum number K of parents (default=4)" << endl
+	   << "  -mu U:    The value U of the parameter mu (default=0.0)" << endl
+	   << "  -seed S:  The random seed S (default=0: use current time)." << endl
+	   << "  -desc:    Generate the descent distribution." << endl
+	   << "  -help:    Print this help message and exit." << endl;
       status = -1;
       goto End_of_Routine;
     }
