@@ -1,7 +1,7 @@
 /*
 ** aux.h: Header file for auxiliary functions.
 **
-** Wim Hordijk   Last modified: 7 April 2021
+** Wim Hordijk   Last modified: 10 March 2026
 */
 
 #ifndef _AUX_H_

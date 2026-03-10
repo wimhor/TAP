@@ -1,61 +1,57 @@
-# NK
-Code for performing random, uphill, or downhill walks on NK landscapes, or random walks on NKC landscapes where the other species undergoes a random mutation every `s` steps.
+# TAP
+Code for numerically simulating the TAP equation. A deterministic version is implemented in an R script, while a stochastic version is implemented in C++.
 
-This code combines various methods that were used to generate the results in the following publications:
-- W. Hordijk and S. A. Kauffman. [Correlation analysis of coupled fitness landscapes](http://onlinelibrary.wiley.com/doi/10.1002/cplx.20092/abstract). _Complexity_ 10(6):41-49, 2005.
-- W. Hordijk, S. A. Kauffman and P. F. Stadler. [Average fitness differences on NK landscapes](http://link.springer.com/article/10.1007/s12064-019-00296-0). _Theory in Biosciences_ 139(1):1-7, 2020.
+This code (or extentions thereof) was used to generate the results in the following publications:
+- M. Steel, W. Hordijk and S. A. Kauffman. [Dynamics of a birth-death process based on combinatorial innovation](https://www.sciencedirect.com/science/article/abs/pii/S0022519320300436). _Journal of Theoretical Biology_ 491:110187, 2020.
+- W. Hordijk, S. A. Kauffman and R. Koppl. [Emergence of autocatalytic sets in a simple model of technological evolution](https://link.springer.com/article/10.1007/s00191-023-00838-2). _Journal of Evolutionary Economics_ 33:1519-1535, 2023.
 
-This C++ code is largely based on earlier C code by [Terry Jones](https://github.com/terrycojones/nk-landscapes). It comes without any warranty, but feel free to use it for your own purposes. If you do so, a reference to the [current repo](https://github.com/wimhor/NK) will be appreciated.
+The code comes without any warranty, but feel free to use it for your own purposes. If you do so, a reference to the [current repo](https://github.com/wimhor/TAP) will be appreciated.
 
 ## Compile
-To compile, go into the `src` directory and type
+To compile the C++ code, go into the `src` directory and type
 
-    make nk
+    make TAP
 
-to compile the `nk_walk` program or
-
-    make nkc
-
-to compile the `nkc_walk` program. The executables will be placed in the parent directory.
+The executable will be placed in the parent directory.
 
 ## Run
 To run, go back up to the parent directory and type
 
-    ./nk_walk -help
+    ./TAP -help
 
-or
+to see a list of required and optional program arguments for the stochastic version. To run the deterministic version, type
 
-    ./nkc_walk -help
-    
-to see a list of expected and optional program arguments.
+    Rscript TAP.R -help
+
+to see a list of optional script arguments (assuming R is installed on your computer).
 
 ## Arguments
-Both programs require at least a certain number of arguments, while others are optional.
+The C++ program for the stochastic version requires at least some arguments, while others are optional. The R script for the deterministic version has only optional arguments. 
 
-For the `nk_walk` program, the following values are required:
-  - `N`:     The genome length.
-  - `K`:     The number of epistatic interactions (`0<=K<N`).
-
+For the `TAP` C++ program, the following values are required:
+  - `i`:    The initial number of goods (`i>0`).
+  - `m`:    The maximum number of goods (when reached, the simulation ends).
+  - `a`:    The parameter `alpha` (`0<=alpha<=1`).
+  
 while these are optional (defaults indicated):
-  - `A`:     The alphabet size (default=`2`).
-  - `epi`:   The type of epistatic interactions (`adj` (default) or `rnd`).
-  - `walk`:  The type of walk to perform (`random` (default), `uphill`, or `downhill`)
-  - `len`:   The length of the walk (only considered if the walk type is `random`).
-  - `nr`:    The number of walks to perform (default=`100`).
-  - `print`: Print mutant fitness values (`none` (default), `fitter`, or `all`).
-  - `seed`:  The seed value for the landscape (default=`-1`).
+  - `K`:    The maximum number of parents for a new good (default=`4`).
+  - `u`:    The death rate (default=`0.0`).
+  - `s`:    The random seed (default=`0`: will be based on current time).
+  - `desc`: Generate the descent distribution.
 
-For the `nkc_walk` program, the following values are required:
-  - `N`:     The genome length.
-  - `K`:     The number of epistatic interactions (`0<=K<N`).
-  - `C`:     The number of between-species epistatic interactions (`0<=C<=N`).
+For the `TAP.R` R script, the following values are optional (defaults indicated):
+  - `a`:    The parameter `alpha` (`0<=alpha<=1`).
+  - `u`:    The death rate (default=`0.0`).
+  - `k`:    The maximum number of parents for a new good (default=`4`).
+  - `m1`:   The initial number of goods (default=`10`).
+  - `t`:    The number of time steps to simulate (default=`100`).
 
-while these are optional (defaults indicated):
-  - `A`:     The alphabet size (default=`2`).
-  - `epi`:   The type of epistatic interactions (`adj` (default) or `rnd`).
-  - `seed`:  The seed value for the landscape (default=`-1`).
-  - `T`:     The number of steps in the random walk (default=`10000`).
-  - `s_mut`: The number of steps after which the other species is mutated (default=`0`).
+## Output
+The C++ program will generate several output files:
+  - `tap.dat`: Contains the number of goods M_t at each time step t.
+  - `goods.dat`: Contains the ID number, time of birth, and time of death (`0` if not applicable) for each newly created good, together with a list of parent IDs.
+  - `hist.dat`: If the `-desc` argument was included, this file contains the descent distribution as a histogram.
 
-## Known issues
-The program `nkc_walk` currently seems to produce incorrect fitness values for `A>2`. If I find the time I'll look into this, but for now it's best to stick to `A=2` (i.e., bit strings).
+The R script will generate one output file:
+  - `TAP.txt`: Contains the number of goods M_t at consecutive time steps.
+  

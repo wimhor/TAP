@@ -1,7 +1,7 @@
 /*
 ** main.cxx: The main routines for simulating the TAP model.
 **
-** Wim Hordijk   Last modified: 22 April 2021
+** Wim Hordijk   Last modified: 10 March 2026
 */
 
 #include <iostream>
@@ -12,7 +12,7 @@ using namespace std;
 
 int getArgs (int argc, char **argv);
 
-TAP  *TAPmodel;
+TAP *TAPmodel;
 
 
 /*
@@ -118,16 +118,6 @@ int getArgs (int argc, char **argv)
       }
       i++;
     }
-    else if (strcmp (argv[i], "-P") == 0)
-    {
-      if ((sscanf (argv[++i], "%lg", &p) != 1) || (TAPmodel->setP (p) == -1))
-      {
-	status = -1;
-	cerr << "Invalid value for parameter 'P': " << argv[i] << endl;
-	goto End_of_Routine;
-      }
-      i++;
-    }
     else if (strcmp (argv[i], "-alpha") == 0)
     {
       if ((sscanf (argv[++i], "%lg", &a) != 1) || (TAPmodel->setAlpha (a) == -1))
@@ -148,16 +138,6 @@ int getArgs (int argc, char **argv)
       }
       i++;
     }
-    else if (strcmp (argv[i], "-pCat") == 0)
-    {
-      if ((sscanf (argv[++i], "%lg", &p) != 1) || (TAPmodel->setPcat (p) == -1))
-      {
-	status = -1;
-	cerr << "Invalid value for parameter 'pCat': " << argv[i] << endl;
-	goto End_of_Routine;
-      }
-      i++;
-    }
     else if (strcmp (argv[i], "-seed") == 0)
     {
       if ((sscanf (argv[++i], "%d", &s) != 1) || (TAPmodel->setRndSeed (s) == -1))
@@ -168,11 +148,6 @@ int getArgs (int argc, char **argv)
       }
       i++;
     }
-    else if (strcmp (argv[i], "-anc") == 0)
-    {
-      TAPmodel->setAnc (true);
-      i++;
-    }
     else if (strcmp (argv[i], "-desc") == 0)
     {
       TAPmodel->setDesc (true);
@@ -181,8 +156,8 @@ int getArgs (int argc, char **argv)
     else if (strcmp (argv[i], "-help") == 0)
     {
       cout << endl
-	   << argv[0] << " -init <i> -max <m> -alpha <a> [-K <K>] [-P <P>] [-mu <u>] [-pCat <p>]"
-	   << "[-seed <s>] [-anc] [-desc] [-help]" << endl
+	   << argv[0] << " -init <i> -max <m> -alpha <a> [-K <K>] [-mu <u>] "
+	   << "[-seed <s>] [-desc] [-help]" << endl
 	   << endl
 	   << "Required arguments:" << endl
 	   << "  init:  The initial number of goods (i > 0)." << endl
@@ -191,11 +166,8 @@ int getArgs (int argc, char **argv)
 	   << endl
 	   << "Optional arguments:" << endl
 	   << "  K:     The maximum number of parents (default: K = 4)" << endl
-	   << "  P:     The parameter 'P' (default: P = 1.0)." << endl
 	   << "  mu:    The parameter 'mu' (or 'death rate'; default: u = 0.0)" << endl
-	   << "  pCat:  The probability of catalysis (to generate a CRS)" << endl
 	   << "  seed:  The random seed to use (default: s = 0, set randomly)." << endl
-	   << "  anc:   Generate ancestor DAG for each good." << endl
 	   << "  desc:  Generate the descent distribution." << endl
 	   << endl
 	   << "  help:  Print out this help message and exit." << endl;

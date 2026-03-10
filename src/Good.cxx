@@ -1,7 +1,7 @@
 /*
 ** Good.cxx: Implementation of a good.
 **
-** Wim Hordijk   Last modified: 20 April 2021
+** Wim Hordijk   Last modified: 10 March 2026
 */
 
 #include <iostream>
@@ -39,7 +39,6 @@ Good::~Good ()
   */
   parents.clear ();
   children.clear ();
-  ancestorDAG.erase (ancestorDAG.begin (), ancestorDAG.end ());
 }
 
 
@@ -129,22 +128,6 @@ void Good::addChild (Good *c)
 
 
 /*
-** addCatalyst: Add a catalyst.
-**
-** Parameters:
-**   - c: A pointer to the catalyst to add.
-*/
-
-void Good::addCatalyst (Good *c)
-{
-  /*
-  ** Add the catalyst to the list.
-  */
-  catalysts.push_back (c);
-}
-
-
-/*
 ** getNrParents: Get the number of parents.
 **
 ** Returns:
@@ -173,22 +156,6 @@ int Good::getNrChildren ()
   ** Return the number of children.
   */
   return (children.size ());
-}
-
-
-/*
-** getNrCatalysts: Get the number of catalysts.
-**
-** Returns:
-**   - The number of catalysts.
-*/
-
-int Good::getNrCatalysts ()
-{
-  /*
-  ** Return the number of catalysts.
-  */
-  return (catalysts.size ());
 }
 
 
@@ -317,68 +284,6 @@ Good *Good::getNextChild ()
 
 
 /*
-** getFirstCat: Get the first catalyst from the list of catalysts.
-**
-** Returns:
-**   - A pointer to the first catalyst (or NULL if no catalyst).
-*/
-
-Good *Good::getFirstCat ()
-{
-  Good *c;
-
-  /*
-  ** Get the first catalyst.
-  */
-  itCat = catalysts.begin ();
-  if (itCat != catalysts.end ())
-  {
-    c = *itCat;
-  }
-  else
-  {
-    c = NULL;
-  }
-
-  /*
-  ** Return the result.
-  */
-  return (c);
-}
-
-
-/*
-** getNextCat: Get the next catalyst in the list.
-**
-** Returns:
-**   - A pointer to the next catalyst (or NULL if no more catalysts).
-*/
-
-Good *Good::getNextCat ()
-{
-  Good *c;
-
-  /*
-  ** Get the next catalyst.
-  */
-  itCat++;
-  if (itCat != catalysts.end ())
-  {
-    c = *itCat;
-  }
-  else
-  {
-    c = NULL;
-  }
-
-  /*
-  ** Return the result.
-  */
-  return (c);
-}
-
-
-/*
 ** getFirstDesc: Get the ID of the first descendant from the list of all descendants.
 **
 ** Returns:
@@ -481,74 +386,6 @@ int Good::getNrDesc ()
 
 
 /*
-** genAncDAG: Generate the ancestor DAG.
-*/
-
-void Good::genAncDAG ()
-{
-  char                   c[8];
-  string                 s;
-  Good                  *p;
-  list<Good*>::iterator  itP;
-  set<string>            anc;
-  set<string>::iterator  itAnc;
-  
-  /*
-  ** If an initial good, use own ID. Otherwise, construct from parent DAGs.
-  */
-  if (tBirth == 1)
-  {
-    sprintf (c, "%d", ID);
-    ancestorDAG.assign (c);
-  }
-  else
-  {
-    /*
-    ** Get the ancestor DAGs from all parents, and temporarily store in a set, so they are
-    ** automatically sorted.
-    */
-    itP = parents.begin ();
-    while (itP != parents.end ())
-    {
-      p = *itP;
-      p->getAncDAG (s);
-      anc.insert (s);
-      itP++;
-    }
-    /*
-    ** Combine the parental ancestor DAGs into a new one.
-    */
-    ancestorDAG.clear ();
-    ancestorDAG.append ("(");
-    itAnc = anc.begin ();
-    ancestorDAG.append (*itAnc);
-    itAnc++;
-    while (itAnc != anc.end ())
-    {
-      ancestorDAG.append (",");
-      ancestorDAG.append (*itAnc);
-      itAnc++;
-    }
-    ancestorDAG.append (")");
-    anc.clear ();
-  }
-}
-
-
-/*
-** getAncDAG: Get a copy of the ancestor DAG.
-**
-** Parameters:
-**  - s: A string to place the copy of the ancestor DAG in.
-*/
-
-void Good::getAncDAG (string& s)
-{
-  s.assign (ancestorDAG);
-}
-
-
-/*
 ** print: Write the data for the good to an output file stream.
 **
 ** Parameters:
@@ -578,68 +415,6 @@ void Good::print (ofstream& ofs)
       ofs << " " << id;
     }
     itParent++;
-  }
-  /*
-  ** Print ancestor DAG, if present.
-  */
-  if ((tBirth > 1) && (ancestorDAG.length () > 0))
-  {
-    ofs << "  " << ancestorDAG;
-  }
-  ofs << endl;
-}
-
-
-/*
-** printCRS: Write the data for the good in reaction format to an output file stream.
-**
-** Parameters:
-**   - ofs: The output file stream to write to.
-*/
-
-void Good::printCRS (ofstream& ofs)
-{
-  Good *g;
-
-  /*
-  ** Print ID.
-  */
-  ofs << "[" << ID << "]  ";
-  /*
-  ** Print reaction.
-  */
-  itParent = parents.begin ();
-  g = *itParent;
-  ofs << g->getID () << " ";
-  itParent++;
-  while (itParent != parents.end ())
-  {
-    g = *itParent;
-    ofs << "+ " << g->getID () << " ";
-    itParent++;
-  }
-  ofs << "-> " << ID << "  ";
-  /*
-  ** Print catalysts.
-  */
-  ofs << "(";
-  itCat = catalysts.begin ();
-  if (itCat == catalysts.end ())
-  {
-    ofs << "_)  1";
-  }
-  else
-  {
-    g = *itCat;
-    ofs << g->getID ();
-    itCat++;
-    while (itCat != catalysts.end ())
-    {
-      g = *itCat;
-      ofs << " " << g->getID ();
-      itCat++;
-    }
-    ofs << ")  1";
   }
   ofs << endl;
 }

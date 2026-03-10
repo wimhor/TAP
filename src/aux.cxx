@@ -1,7 +1,7 @@
 /*
 ** auxiliary.cxx: Auxiliary functions for the TAP program.
 **
-** Wim Hordijk   Last modified: 7 April 2021
+** Wim Hordijk   Last modified: 10 March 2026
 */
 
 #include <math.h>

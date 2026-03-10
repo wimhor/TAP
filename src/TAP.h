@@ -1,7 +1,7 @@
 /*
 ** TAP.h: Definition of the TAP class.
 **
-** Wim Hordijk   Last modified: 17 September 2022
+** Wim Hordijk   Last modified: 10 March 2026
 */
 
 #ifndef _TAP_H_
@@ -23,7 +23,7 @@ class TAP
   /*
   ** Constructors and destructors.
   */
-  TAP  ();
+   TAP  ();
   ~TAP ();
 
   /*
@@ -37,15 +37,10 @@ class TAP
   int    getK       ();
   int    setMaxM    (int m);
   int    getMaxM    ();
-  int    setP       (double p);
-  double getP       ();
   int    setAlpha   (double a);
   double getAlpha   ();
   int    setMu      (double u);
   double getMu      ();
-  int    setPcat    (double p);
-  double getPcat    ();
-  void   setAnc     (bool anc);
   void   setDesc    (bool desc);
   int    run        ();
   
@@ -54,17 +49,15 @@ class TAP
   ** Private member functions.
   */
   double newGoods      (double pr, int n, int k);
-  void   addCatalysts  (Good *g);
   void   writeGoods    (const char *filename);
   void   writeDescDist (const char *filename);
-  void   writeCRS      (const char *filename);
 
   /*
   ** Private member variables.
   */
   int                      rndSeed, nrGoods, nrInit, K, maxM, t;
-  double                   P, alpha, mu, pCat;
-  bool                     ancDAG, descDist;
+  double                   alpha, mu;
+  bool                     descDist;
   Good                    *root;
   vector<Good*>            goods, dead;
   vector<Good*>::iterator  itGood, itDead;
