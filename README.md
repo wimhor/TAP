@@ -40,7 +40,7 @@ while these are optional (defaults indicated):
   - `desc`: Generate the descent distribution.
 
 For the `TAP.R` R script, the following values are optional (defaults indicated):
-  - `a`:    The parameter `alpha` (`0<=alpha<=1`).
+  - `a`:    The parameter `alpha` (default=`0.01`).
   - `u`:    The death rate (default=`0.0`).
   - `k`:    The maximum number of parents for a new good (default=`4`).
   - `m1`:   The initial number of goods (default=`10`).
